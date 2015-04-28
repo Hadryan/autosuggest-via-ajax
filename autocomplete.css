@@ -1,0 +1,105 @@
+form#searchForm {
+  position:relative;
+  width:320px;
+  z-index:999;
+}
+form#searchForm input[type="submit"] {
+  background:transparent;
+  border:none;
+  letter-spacing:-9999px;
+  position:absolute;
+  right:0;
+  top:0;
+  width:20px;
+  z-index:99;
+}
+.autosearch-icon {
+  cursor:pointer;
+  font-family:citirx-web-icons!important;
+  font-style:normal;
+  font-variant:normal;
+  font-weight:400;
+  height:28px;
+  position:absolute;
+  right:0;
+  text-transform:none;
+  top:3px;
+  width:26px;
+  z-index:9;
+}
+.autosearch-icon:before {
+  content:"y";
+  display:block;
+  font-size:15px;
+  margin-right:8px;
+  margin-top:8px;
+  text-align:right;
+}
+.suggestionList {
+  background:#fff;
+  border:1px solid #ddd!important;
+  border-radius:0 0 3px 3px!important;
+  font-family:citrixsans,Arial,Helvetica,sans-serif!important;
+  position:absolute;
+  width:100%;
+  z-index:999;
+}
+.suggestionList .srch_item a {
+  border-bottom:1px solid #ddd!important;
+  display:block;
+  padding:15px 11px 19px!important;
+}
+.suggestionList .srch_item .title {
+  color:#0090da!important;
+  display:block;
+  line-height:23px;
+}
+.suggestionList li.active,.suggestionList li.active:focus,.suggestionList li:hover {
+  background:#f8f8f8!important;
+}
+.srch_item span {
+  color:#3f4042!important;
+  font-size:16px;
+}
+.srch_recommended {
+  background:#fff;
+  border-bottom:1px solid #ddd;
+  color:#3f4042!important;
+  font-size:16px;
+  font-weight:700;
+  line-height:1em;
+  padding:21px 11px 19px!important;
+}
+.srch_recommended a {
+  color:#0090da!important;
+  float:right;
+  font-size:16px;
+  font-weight:400;
+}
+.suggestion-container {
+  position:relative;
+  top:37px;
+}
+#q {
+  -moz-backface-visibility:hidden;
+  -moz-perspective:1000px;
+  -moz-transition:all .35s cubic-bezier(0.17,0.04,0.03,0.94);
+  -ms-backface-visibility:hidden;
+  -ms-transform:translate3d(0,0,0);
+  -o-backface-visibility:hidden;
+  -o-transition:all .35s cubic-bezier(0.17,0.04,0.03,0.94);
+  -webkit-backface-visibility:hidden;
+  -webkit-perspective:1000px;
+  -webkit-transform:translate3d(0,0,0);
+  -webkit-transition:all .35s cubic-bezier(0.17,0.04,0.03,0.94);
+  backface-visibility:hidden;
+  float:right;
+  line-height:1em;
+  min-height:32px;
+  perspective:1000px;
+  transition:all .35s cubic-bezier(0.17,0.04,0.03,0.94);
+  width:135px;
+}
+#q:focus {
+  width:100%;
+}

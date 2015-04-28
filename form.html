@@ -1,0 +1,7 @@
+<form id="searchForm" name="searchForm" action="${action}" method="GET">
+                <input id="q" autocomplete="off" data-suggest="${properties.autoSuggest ? properties.autoSuggest :"false"}" data-limit="${dropDownLimit}" name="q" type="text">
+                <input id="dir" name="dir" type="hidden" value="${dirPath}">
+                <input id="offset" name="offset" type="hidden" value="${offset}">                        
+                <input type="submit" value="${buttonlabel}" class="button" title="${submitText}">
+                <span class="autosearch-icon"></span>
+            </form>
