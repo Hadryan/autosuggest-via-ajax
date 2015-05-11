@@ -1,24 +1,23 @@
 // -----------------------------------
-// Search
+// Auto Suggest Search by Ajax
 // -----------------------------------
 
 var searchAutoSuggest = searchAutoSuggest || {
     index: 0, /* Keyboard Nav Index */
-    searchID: "#q",
+    searchID: "#search",
     iskybrdNav: 1,
     searchFormID: "#searchForm",
     suggestionClass: ".suggestionList",
     suggestionID: "#searchAutoSuggestionsList",
     maxResult: "",
-    searchDir: "",
+    searchDir: "https://api.github.com/search/repositories",
     searchPage: "",
     searchStr: "",
     dataSuggest: "",
     init: function() {
-    	searchAutoSuggest.maxResult = $("#searchForm").attr('data-limit');
-    	searchAutoSuggest.searchDir = $("#searchForm #dir").val();
-    	searchAutoSuggest.searchPage = $("#searchForm").attr('action');
-    	searchAutoSuggest.dataSuggest = $("#q").attr('data-suggest');
+    	searchAutoSuggest.maxResult = $(searchAutoSuggest.searchID).attr('data-limit');
+    	searchAutoSuggest.searchPage = $(searchAutoSuggest.searchFormID).attr('action');
+    	searchAutoSuggest.dataSuggest = $(searchAutoSuggest.searchID).attr('data-suggest');
     	
     	if(searchAutoSuggest.dataSuggest == "true") {
     		$(searchAutoSuggest.searchID).on({
@@ -45,14 +44,9 @@ var searchAutoSuggest = searchAutoSuggest || {
                 }
             });
     	}
-        
-        $("body").on('click', '.srch_all', function(p) {
-            p.preventDefault();
-            $(this).parents('form').submit();
-        });
-        
+		
         $('body').on('click', function(e) { /* Hide Suggestion box on focus out */
-            if(!$(e.target).closest(searchAutoSuggest.searchID +', '+ searchAutoSuggest.searchFormID +' input["type=submit"]').length) {
+            if(!$(e.target).closest(searchAutoSuggest.searchID).length) {
                 $(searchAutoSuggest.suggestionClass).hide();
                 $(searchAutoSuggest.searchID).val("");
             };
@@ -90,28 +84,30 @@ var searchAutoSuggest = searchAutoSuggest || {
         return iskybrd;
     },
     getSearchResult: function(inputString, path) {      
-        $.getJSON("/bin/querybuilder.json?1_group.1_property=fn:lower-case(@jcr:content/jcr:title)&1_group.1_property.operation=like&1_group.1_property.value="+inputString.toLowerCase()+"%25&1_group.2_property=fn:lower-case(@jcr:content/jcr:description)&1_group.2_property.operation=like&1_group.2_property.value=%25"+inputString.toLowerCase()+"%25&1_group.p.or=true&2_orderby=@jcr:content/cq:lastModified&2_orderby.index=true&2_orderby.sort=desc&3_path="+path+"&4_type=cq:Page",
-           function(data) {
+        $.getJSON(path, {q: inputString} ,
+		function(data) {
             count = 0;
             html = '';
-            if(data.success) {
+			total_count = 0;
+            if(data.total_count > 0) {
+				total_count = data.total_count;
                 html = '<ul>';
-                $.each(data.hits, function(k, v) {
+                $.each(data.items, function(k, v) {
                     if(count == searchAutoSuggest.maxResult) {
                         return false;
                     } /* break to show only limited hits */
-                    html = html + '<li id="srch_item_' + k + '" class="srch_item"><a href="' + v.path + '"><span class="title">' + v.title + '</span><span class="excerpt">' + v.excerpt + '</span></a></li>';
+                    html = html + '<li id="srch_item_' + k + '" class="srch_item"><a href="' + v.html_url + '"><span class="title">' + v.full_name + '</span><span class="excerpt">' + v.description + '</span></a></li>';
                     count++;
                 });
                 html = html + '</ul>';
             }
             
             if(count != 0) 
-            	recmd_text = "Recommended";
+            	recmd_text = "Showing "+count+" of total "+total_count+" Repo's";
             else 
-            	recmd_text = "No Recommended";
+            	recmd_text = "No Repo Found";
             
-            html = '<div class="srch_recommended"><span>' + recmd_text + ' links.</span><a class="srch_all" href="">Search All</a></div>' + html;
+            html = '<div class="srch_recommended"><span>' + recmd_text + ' </span></div>' + html;
             
             if ($(searchAutoSuggest.suggestionID).length != 0) {
                 $(searchAutoSuggest.suggestionClass).empty();
@@ -125,3 +121,7 @@ var searchAutoSuggest = searchAutoSuggest || {
         });
     }
 };
+
+$(document).ready( function(){
+	searchAutoSuggest.init();
+});
